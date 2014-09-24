@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 //import android.support.v13.app.FragmentPagerAdapter;
@@ -14,6 +15,8 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 
 import bcalendargroups.QueryMaster;
+import bcalendargroups.activities.EditGroupActivity;
+import bcalendargroups.activities.EditGroupActivity_;
 import bcalendargroups.fragments.EventFragment;
 
 import org.json.JSONArray;
@@ -40,7 +43,7 @@ public class GroupEvents extends FragmentActivity implements
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a {@link FragmentPagerAdapter}
+     * fragments for each of the sections. We use a {@link android.support.v4.app.FragmentPagerAdapter}
      * derivative, which will keep every loaded fragment in memory. If this
      * becomes too memory intensive, it may be best to switch to a
      * {@link android.support.v13.app.FragmentStatePagerAdapter}.
@@ -72,14 +75,14 @@ public class GroupEvents extends FragmentActivity implements
         return isAdmin;
     }
 
-    public static GroupEvents instance;
+//    public static GroupEvents instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.group_events_view_pager);
 
-        instance = this;
+//        instance = this;
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -138,9 +141,8 @@ public class GroupEvents extends FragmentActivity implements
 
     @Override
     protected void onDestroy() {
-        // TODO Auto-generated method stub
         super.onDestroy();
-        instance = null;
+//        instance = null;
     }
 
     @Override
@@ -172,9 +174,9 @@ public class GroupEvents extends FragmentActivity implements
                 mSectionsPagerAdapter.notifyDataSetChanged();
                 initTabs();
             } else {
-                // QueryMaster.alert(this, SectionsPagerAdapter.EMPTY);
-                if (isAdmin)
+                if (isAdmin) {
                     showQuestionCreateEvent();
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -242,13 +244,19 @@ public class GroupEvents extends FragmentActivity implements
                     }
                 });
 
-        dialog.setNegativeButton(MainActivity.getInstance().language.NO,
+        /**
+         * GO {@link bcalendargroups.activities.EditGroupActivity}
+         */
+        dialog.setNegativeButton(MainActivity.getInstance().language.NO_GO_GROUP_SETTING,
                 new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
+                        Intent intent = new Intent(GroupEvents.this,
+                                EditGroupActivity_.class);
+                        intent.putExtra(EditGroupActivity.GROUP_ID, groupId);
 
+                        startActivity(intent);
                     }
                 });
 

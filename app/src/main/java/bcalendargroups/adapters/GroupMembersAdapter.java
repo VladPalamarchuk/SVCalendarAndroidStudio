@@ -18,137 +18,149 @@ import com.example.calendar.R;
 import java.util.ArrayList;
 
 public class GroupMembersAdapter extends ArrayAdapter<Object> implements
-		Filterable {
+        Filterable {
 
-	private Context context;
-	private ArrayList<Object> displayedItems;
-	private ArrayList<Object> originalItems;
+    private Context context;
+    private ArrayList<Object> displayedItems;
+    private ArrayList<Object> originalItems;
 
-	private int resource;
+    private int resource;
 
-	public GroupMembersAdapter(Context context, int resource) {
-		super(context, 0);
-		this.context = context;
-		this.resource = resource;
-		displayedItems = new ArrayList<Object>();
-	}
+    public GroupMembersAdapter(Context context, int resource) {
+        super(context, 0);
+        this.context = context;
+        this.resource = resource;
+        displayedItems = new ArrayList<Object>();
+    }
 
-	public static class GroupMemberItem {
-		public String id;
+    public GroupMembersAdapter(Context context) {
+        this(context, R.layout.group_member_item);
+    }
 
-		public String name;
-		public String surname;
-		public String phone;
 
-		public GroupMemberItem(JSONObject jsonObject) throws JSONException {
+    public static class GroupMemberItem {
+        public String id;
 
-			this.id = jsonObject.getString("id");
-			this.name = jsonObject.getString("name");
-			this.surname = jsonObject.getString("surname");
-			this.phone = jsonObject.getString("phone");
-		}
-	}
+        public String name;
+        public String surname;
+        public String phone;
 
-	@Override
-	public void clear() {
-		displayedItems.clear();
-	}
+        public GroupMemberItem(JSONObject jsonObject) throws JSONException {
 
-	@Override
-	public int getCount() {
-		return displayedItems.size();
-	}
+            this.id = jsonObject.getString("id");
+            this.name = jsonObject.getString("name");
+            this.surname = jsonObject.getString("surname");
+            this.phone = jsonObject.getString("phone");
+        }
+    }
 
-	public void add(JSONArray jsonArray) throws JSONException {
-		final int length = jsonArray.length();
-		for (int i = 0; i < length; i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
+    @Override
+    public void clear() {
+        displayedItems.clear();
+    }
 
-			this.add(new GroupMemberItem(jsonObject));
-		}
-		notifyDataSetChanged();
-	}
+    @Override
+    public int getCount() {
+        return displayedItems.size();
+    }
 
-	private class ViewHolder {
-		public TextView groupMemberName;
-	}
+    public void add(JSONArray jsonArray) throws JSONException {
+        final int length = jsonArray.length();
+        for (int i = 0; i < length; i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-	@Override
-	public void add(Object object) {
-		displayedItems.add(object);
-	}
+            this.add(new GroupMemberItem(jsonObject));
+        }
+        notifyDataSetChanged();
+    }
 
-	@Override
-	public Object getItem(int position) {
-		return displayedItems.get(position);
-	}
+    private class ViewHolder {
+        public TextView groupMemberName;
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		final GroupMemberItem groupMemberItem = (GroupMemberItem) getItem(position);
-		ViewHolder holder;
+    @Override
+    public void add(Object object) {
+        displayedItems.add(object);
+    }
 
-		if (convertView == null) {
-			holder = new ViewHolder();
-			LayoutInflater layoutInflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    @Override
+    public Object getItem(int position) {
+        return displayedItems.get(position);
+    }
 
-			convertView = layoutInflater.inflate(resource, null);
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        final GroupMemberItem groupMemberItem = (GroupMemberItem) getItem(position);
+        ViewHolder holder;
 
-			holder.groupMemberName = (TextView) convertView
-					.findViewById(R.id.groupMemberName);
+        if (convertView == null) {
+            holder = new ViewHolder();
+            LayoutInflater layoutInflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-			convertView.setTag(holder);
-		} else {
-			holder = (ViewHolder) convertView.getTag();
-		}
+            convertView = layoutInflater.inflate(resource, null);
 
-		holder.groupMemberName.setText(groupMemberItem.name);
+            holder.groupMemberName = (TextView) convertView
+                    .findViewById(R.id.groupMemberName);
 
-		convertView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
-			}
-		});
+        holder.groupMemberName.setText(groupMemberItem.name);
 
-		return convertView;
-	}
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-	@Override
-	public Filter getFilter() {
+            }
+        });
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
 
-		Filter filter = new Filter() {
-			@Override
-			protected FilterResults performFiltering(CharSequence constraint) {
-				FilterResults filterResults = new FilterResults();
-				ArrayList<Object> filteredCollection = new ArrayList<Object>();
+                return false;
+            }
+        });
 
-				if (originalItems == null) {
-					originalItems = new ArrayList<Object>(displayedItems);
-				}
-				if (constraint == null || constraint.length() == 0) {
-					filterResults.count = originalItems.size();
-					filterResults.values = originalItems;
-				} else {
-					constraint = constraint.toString().toLowerCase();
-					for (Object originalItem : originalItems) {
+        return convertView;
+    }
 
-					}
-					filterResults.count = filteredCollection.size();
-					filterResults.values = filteredCollection;
-				}
-				return filterResults;
-			}
+    @Override
+    public Filter getFilter() {
 
-			@Override
-			protected void publishResults(CharSequence constraint,
-					FilterResults results) {
-				displayedItems = (ArrayList<Object>) results.values;
-				notifyDataSetChanged();
-			}
-		};
-		return filter;
-	}
+        Filter filter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults filterResults = new FilterResults();
+                ArrayList<Object> filteredCollection = new ArrayList<Object>();
+
+                if (originalItems == null) {
+                    originalItems = new ArrayList<Object>(displayedItems);
+                }
+                if (constraint == null || constraint.length() == 0) {
+                    filterResults.count = originalItems.size();
+                    filterResults.values = originalItems;
+                } else {
+                    constraint = constraint.toString().toLowerCase();
+                    for (Object originalItem : originalItems) {
+
+                    }
+                    filterResults.count = filteredCollection.size();
+                    filterResults.values = filteredCollection;
+                }
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint,
+                                          FilterResults results) {
+                displayedItems = (ArrayList<Object>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+        return filter;
+    }
 
 }

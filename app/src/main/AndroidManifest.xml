@@ -158,7 +158,7 @@
         <!--</activity>-->
         <activity
             android:name="com.example.calendar.MapsActivyty"
-            android:label="@string/title_activity_maps_activyty"></activity>
+            android:label="@string/title_activity_maps_activyty" />
         <!--<activity android:name="bcalendargroups.SingleGroup" >-->
         <!--</activity>-->
         <!--<activity android:name="bcalendargroups.GroupMembers" >-->
@@ -170,7 +170,17 @@
         <!--</activity>-->
         <!--<activity android:name="bcalendargroups.EventMembers" >-->
         <!--</activity>-->
-        <activity android:name="fragments.InitialSettingsActivity"></activity>
+        <activity android:name="fragments.InitialSettingsActivity" />
+
+        <!--ANNOTATION USAGE-->
+        <activity
+            android:name="bcalendargroups.activities.EditGroupActivity_"
+            android:screenOrientation="portrait" />
+
+        <!--NOT ANNOTATION USAGE-->
+        <!--<activity-->
+        <!--android:name="bcalendargroups.activities.EditGroupActivity"-->
+        <!--android:screenOrientation="portrait" />-->
 
         <receiver android:name="palamarchuk.calendarwidget.month.OneByOneWidget">
             <intent-filter>
@@ -194,8 +204,8 @@
         </receiver>
 
         <!--<activity-->
-            <!--android:name="com.example.calendar.SpleshActivity"-->
-            <!--android:label="@string/title_activity_splesh"></activity>-->
+        <!--android:name="com.example.calendar.SpleshActivity"-->
+        <!--android:label="@string/title_activity_splesh"></activity>-->
     </application>
 
 </manifest>
