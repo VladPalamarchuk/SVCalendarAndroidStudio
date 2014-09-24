@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/color_picker_bacground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.5" >
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/color_picker_fragment_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#cdcdcd" >
+
+        <ImageView
+            android:id="@+id/color_picker_fragment_open_left_menu"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/back_to_menu" />
+
+        <Spinner
+            android:id="@+id/color_picker_spinner"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:spinnerMode="dropdown"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/color_picker_fragment_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/color_picker_fragment_top" >
+    </ListView>
+
+</RelativeLayout>

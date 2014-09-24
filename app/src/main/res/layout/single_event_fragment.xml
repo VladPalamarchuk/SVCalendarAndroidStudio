@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ExpandableListView
+        android:id="@+id/singleEventFragmentUserTasksExpandableListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="44dip"
+        android:groupIndicator="@null" />
+
+    <SlidingDrawer
+        android:id="@+id/drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:content="@+id/content"
+        android:handle="@+id/handle" >
+
+        <TextView
+            android:id="@id/handle"
+            android:layout_width="match_parent"
+            android:layout_height="44dip"
+            android:background="@drawable/comment_view_background"
+            android:gravity="center"
+            android:text="@string/comments"
+            android:textColor="@android:color/white" />
+
+        <LinearLayout
+            android:id="@id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ListView
+                android:id="@+id/singleEventCommentListView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </SlidingDrawer>
+
+</RelativeLayout>

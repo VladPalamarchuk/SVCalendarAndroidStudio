@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/one_event_fragment_location_image"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/metka" 
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/one_event_fragment_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:text="Киев" />
+
+    <ImageView
+        android:id="@+id/one_event_fragment_wether_image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cofe" />
+
+    <TextView
+        android:id="@+id/one_event_fragment_weather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:text="+37-38" />
+
+    <ImageView
+        android:id="@+id/one_event_fragment_file_image"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/screpka"
+          android:layout_gravity="center" />
+
+    <TextView
+        android:id="@+id/one_event_fragment_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:text="Изображениe1" />
+
+</LinearLayout>

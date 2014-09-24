@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/assigment_by_group_events_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="palamarchuk.bcalendargroups.EventsByGroup" >
+
+    <RelativeLayout
+        android:id="@+id/assigment_by_group_events_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.5"
+        android:background="#ffffff" >
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/assignmentsByGroupListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" 
+        android:layout_margin="10dp"/>
+
+</RelativeLayout>

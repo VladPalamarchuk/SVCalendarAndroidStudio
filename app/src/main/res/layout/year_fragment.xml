@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/year_fragment_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/year_fragment_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.95"
+        android:background="#cdcdcd" >
+
+        <TextView
+            android:id="@+id/year_fragment_year_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/year_fragment_open_left_menu"
+            android:padding="5dp"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/yea_fragment_search_image"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:padding="5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/search" />
+
+        <ImageView
+            android:id="@+id/year_fragment_open_left_menu"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/back_to_menu" />
+
+        <Spinner
+            android:id="@+id/year_fragment_spinner"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:padding="2dp"
+            android:spinnerMode="dropdown"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/year_fragment_add_event"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@+id/yea_fragment_search_image"
+            android:padding="5dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/add_event_top_base_theme" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/year_line"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:alpha="0.5"
+        android:background="#ffffff" >
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/year_fragment_year"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+    </RelativeLayout>
+
+</LinearLayout>

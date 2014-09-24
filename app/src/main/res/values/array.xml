@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="widget_shown_setting_array">
+        <item>Сегодня</item>
+        <item>Сегодня и завтра</item>
+        <item>Следующие 3 дня</item>
+        <item>Сегодня или следующие 3 события</item>
+        <item>Сегодня и следующие 6 событий</item>
+        <item>Сегодня и следующие 9 событий</item>
+    </array>
+    <array name="widget_date_format">
+        <item>+х (оставшиеся дни)</item>
+        <item>дд.мм. (ЕС Формат)</item>
+        <item>мм/дд (США Формат)</item>
+    </array>
+    <array name="widget_hide_when">
+        <item>Время начала достигнуто</item>
+        <item>Время окончания достигнуто</item>
+        <item>Не скрывать</item>
+    </array>
+
+    <array name="widget_single_day_events_settings">
+        <item>Отобразить</item>
+        <item>Скрыть</item>
+        <item>Скрыть после 08:00</item>
+        <item>Скрыть после 10:00</item>
+        <item>Скрыть после 12:00</item>
+        <item>Скрыть после 14:00</item>
+        <item>Скрыть после 16:00</item>
+        <item>Скрыть после 18:00</item>
+        <item>Скрыть после 20:00</item>
+        <item>Скрыть после 22:00</item>
+    </array>
+    <array name="widget_onclick_starts">
+        <item>Месячный просмотр</item>
+        <item>Недельный просмотр</item>
+        <item>Дневной просмотр</item>
+        <item>Повестка дня</item>
+        <item>Просмотр по умолчанию</item>
+        <item>Годовой просмотр</item>
+    </array>
+    <array name="widget_on_icon_click_starts">
+        <item>Месячный просмотр</item>
+        <item>Недельный просмотр</item>
+        <item>Дневной просмотр</item>
+        <item>Повестка дня</item>
+        <item>Просмотр по умолчанию</item>
+        <item>Годовой просмотр</item>
+    </array>
+    <array name="widget_shown_widget_type_array">
+        <item>Повестка дня</item>
+        <item>Недельный просмотр</item>
+        <item>Месячный просмотр</item>
+    </array>
+    <array name="widget_shown_widget_count_array">
+        <item>1 день</item>
+        <item>2 дн.</item>
+        <item>3 дн.</item>
+        <item>4 дн.</item>
+        <item>5 дн.</item>
+        <item>6 дн.</item>
+        <item>7 дн.</item>
+        <item>8 дн.</item>
+        <item>9 дн.</item>
+        <item>10 дн.</item>
+        <item>11 дн.</item>
+        <item>12 дн.</item>
+        <item>13 дн.</item>
+        <item>14 дн.</item>
+    </array>
+</resources>

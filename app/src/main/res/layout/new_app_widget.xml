@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#09C"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/view_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/liner_buttons" />
+
+    <LinearLayout 
+        android:id="@+id/liner_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="0dp" >
+
+        <ImageButton
+            android:id="@+id/widget_button_left"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:padding="0dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/button_left" />
+
+        <ImageButton
+            android:id="@+id/widget_button_right"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:padding="0dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/button_right" />
+    </LinearLayout>
+
+</RelativeLayout>

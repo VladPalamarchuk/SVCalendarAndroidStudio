@@ -1,0 +1,82 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        //classpath 'com.android.tools.build:gradle:0.10.+'
+        classpath 'com.android.tools.build:gradle:0.12.1'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+    compileSdkVersion 20
+    buildToolsVersion "20.0.0"
+
+    defaultConfig {
+        applicationId "com.example.com.calendar"
+        minSdkVersion 14
+        targetSdkVersion 20
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+}
+
+apt {
+    arguments {
+        androidManifestFile variant.processResources.manifestFile
+        resourcePackageName "com.example.calendar"
+    }
+}
+
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:support-v4:20.+'
+    compile 'com.android.support:support-v13:20.+'
+    compile "org.apache.httpcomponents:httpmime:4.2.3"
+    compile 'org.mnode.ical4j:ical4j:1.0.3'
+    compile 'com.larswerkman:HoloColorPicker:1.1'
+    compile 'com.google.android.gms:play-services:4.4.52'
+    //compile 'com.vk:androidsdk:+'
+    compile 'com.github.asne.facebook:facebook:3.17.2'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
+    compile 'com.netflix.rxjava:rxjava-apache-http:0.20.4'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.daimajia.easing:library:1.0.0@aar'
+    compile 'com.daimajia.androidanimations:library:1.1.2@aar'
+    compile 'javax.mail:mail:1.4.1'
+    compile 'javax.activation:activation:1.1'
+    compile 'net.sf.opencsv:opencsv:2.3'
+    compile project(":aFileChooser")
+    compile project(":vksdk_library");
+    /**
+     * annotations
+     */
+    apt "org.androidannotations:androidannotations:3.0+"
+
+    compile 'org.androidannotations:androidannotations-api:3.0.+'
+
+    compile 'com.android.support:support-v13:18.0.+'
+
+}

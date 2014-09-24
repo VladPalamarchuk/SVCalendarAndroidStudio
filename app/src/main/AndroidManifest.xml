@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.calendar"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.inte" />
+
+    <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+    <permission
+        android:name="com.example.calendar.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.example.calendar.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission
+        android:name="com.image.app.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.image.app.permission.MAPS_RECEIVE" />
+    <!-- Access Internet -->
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <!-- Take picture -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- GET Latitude Longitude -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="20" />
+
+    <uses-permission android:name="ma" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+
+    <application
+        android:allowBackup="true"
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="4.4.52-000" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyBuJwxKM4JDxRsZJKktnonz-9bs9pTAQ8U" />
+        <!-- test key AIzaSyBuJwxKM4JDxRsZJKktnonz-9bs9pTAQ8U -->
+        <!-- my new key AIzaSyDLhJptyWxIZ0w_fYkPWGWo0J8OMU8pt68 -->
+
+        <activity
+            android:name="com.example.calendar.MainActivity"
+            android:label="bCalendar"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.calendar.Color_picker"
+            android:label=""
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="filechooser.FileChooserActivity"
+            android:label=""
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.example.calendar.AddFriendActivity"
+            android:label="@string/title_activity_add_friend"></activity>
+        <activity
+            android:name="bcalendargroups.pager.GroupEvents"
+            android:label="@string/title_activity_add_friend"></activity>
+
+        <service android:name="com.example.calendar.MyService"></service>
+
+        <!--<activity-->
+        <!--android:name="com.example.calendar.NotificationFriends"-->
+        <!--android:label="@string/title_activity_notification_friends" >-->
+        <!--</activity>-->
+        <activity
+            android:name="com.example.calendar.GetOneItem"
+            android:label="@string/title_activity_get_one_item"></activity>
+        <!--<activity-->
+        <!--android:name="com.example.calendar.WidgetOneConfig"-->
+        <!--android:label="@string/title_activity_widget_one_config" >-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />-->
+        <!--</intent-filter>-->
+        <!--</activity>-->
+        <activity
+            android:name="com.example.calendar.AutorizationActivity"
+            android:label="@string/title_activity_autorization"></activity>
+        <activity
+            android:name="com.example.calendar.SearchPeopleCalendar"
+            android:label="@string/title_activity_search_people_calendar"></activity>
+
+        <receiver
+            android:name="com.example.calendar.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.example.gcm" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.example.calendar.GcmIntentService" />
+
+        <activity android:name="com.example.calendar.DemoActivity"></activity>
+        <activity
+            android:name="com.example.calendar.GooglePlusActivity"
+            android:label="@string/title_activity_google_plus"></activity>
+        <activity android:name="com.example.calendar.FileManagerActivity"></activity>
+
+        <receiver
+            android:name="palamarchuk.calendarwidget.month.BusinessCalendarWidgetMonth"
+            android:icon="@android:drawable/star_big_on"
+            android:label="@string/widget_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="palamarchuk.calendarwidget.month.BusinessCalendarWidgetMonth.WidgetActions.ActionNext" />
+                <action android:name="palamarchuk.calendarwidget.month.BusinessCalendarWidgetMonth.WidgetActions.ActionPrevious" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_metadata" />
+        </receiver>
+
+        <activity
+            android:name="palamarchuk.calendarwidget.month.MonthWidgetSettingActivity"
+            android:label="@string/title_activity_widget_setting">
+            <intent-filter>
+                <action android:name="ACTION_APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+        <!--<activity-->
+        <!--android:name="com.example.calendar.Clock"-->
+        <!--android:label="@string/title_activity_clock" >-->
+        <!--</activity>-->
+        <activity
+            android:name="com.example.calendar.MapsActivyty"
+            android:label="@string/title_activity_maps_activyty"></activity>
+        <!--<activity android:name="bcalendargroups.SingleGroup" >-->
+        <!--</activity>-->
+        <!--<activity android:name="bcalendargroups.GroupMembers" >-->
+        <!--</activity>-->
+        <!--<activity android:name="bcalendargroups.AssignmentsByGroup" >-->
+        <!--</activity>-->
+        <!--<activity android:name="bcalendargroups.EventsByGroup" />-->
+        <!--<activity android:name="bcalendargroups.SingleEvent" >-->
+        <!--</activity>-->
+        <!--<activity android:name="bcalendargroups.EventMembers" >-->
+        <!--</activity>-->
+        <activity android:name="fragments.InitialSettingsActivity"></activity>
+
+        <receiver android:name="palamarchuk.calendarwidget.month.OneByOneWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_ENABLED" />
+                <action android:name="android.appwidget.action.APPWIDGET_DISABLED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/one_by_one_widget_info" />
+        </receiver>
+        <receiver android:name="palamarchuk.calendarwidget.month.NewAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/new_app_widget_info" />
+        </receiver>
+
+        <!--<activity-->
+            <!--android:name="com.example.calendar.SpleshActivity"-->
+            <!--android:label="@string/title_activity_splesh"></activity>-->
+    </application>
+
+</manifest>

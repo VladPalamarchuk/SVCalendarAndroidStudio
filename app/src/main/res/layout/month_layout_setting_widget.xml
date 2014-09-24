@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--show end time start -->
+    <include layout="@layout/include_show_end_time" />
+    <!--show end time end -->
+
+
+    <!--show place start-->
+    <include layout="@layout/include_show_place" />
+    <!--show place end-->
+
+    <!--hide event when start-->
+    <include layout="@layout/include_hide_event_when" />
+    <!--start event when end-->
+
+    <!--current single day events start-->
+    <include layout="@layout/include_current_single_day_events" />
+    <!--current single day events end-->
+
+    <!--widget starts / open start-->
+    <include layout="@layout/include_widget_starts" />
+    <!--widget starts / open end-->
+
+    <include layout="@layout/include_widget_show_setting_buttons" />
+
+
+</LinearLayout>
