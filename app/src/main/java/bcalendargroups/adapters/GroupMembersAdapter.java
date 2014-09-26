@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -15,14 +16,34 @@ import org.json.JSONObject;
 
 import com.example.calendar.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Iterator;
+
+import bcalendargroups.lazylist.ImageLoader;
 
 public class GroupMembersAdapter extends ArrayAdapter<Object> implements
         Filterable {
 
+    private OnClickListener onClickListener;
+
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+
+    private OnLongClickListener onLongClickListener;
+
+    public void setOnLongClickListener(OnLongClickListener onLongClickListener) {
+        this.onLongClickListener = onLongClickListener;
+    }
+
     private Context context;
     private ArrayList<Object> displayedItems;
     private ArrayList<Object> originalItems;
+
+    private ImageLoader imageLoader;
 
     private int resource;
 
@@ -30,7 +51,8 @@ public class GroupMembersAdapter extends ArrayAdapter<Object> implements
         super(context, 0);
         this.context = context;
         this.resource = resource;
-        displayedItems = new ArrayList<Object>();
+        this.displayedItems = new ArrayList<Object>();
+        this.imageLoader = new ImageLoader(context);
     }
 
     public GroupMembersAdapter(Context context) {
@@ -38,12 +60,17 @@ public class GroupMembersAdapter extends ArrayAdapter<Object> implements
     }
 
 
-    public static class GroupMemberItem {
+    public static class GroupMemberItem implements Serializable, Cloneable,
+            Comparable<GroupMemberItem> {
+
+        private static final long serialVersionUID = 3L;
+
         public String id;
 
         public String name;
         public String surname;
         public String phone;
+        public String photo;
 
         public GroupMemberItem(JSONObject jsonObject) throws JSONException {
 
@@ -51,6 +78,31 @@ public class GroupMembersAdapter extends ArrayAdapter<Object> implements
             this.name = jsonObject.getString("name");
             this.surname = jsonObject.getString("surname");
             this.phone = jsonObject.getString("phone");
+            this.photo = jsonObject.getString("photo");
+        }
+
+        @Override
+        public Object clone() {
+            try {
+                return super.clone();
+            } catch (CloneNotSupportedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @Override
+        public int compareTo(GroupMemberItem memberItem) {
+            return this.name.compareTo(memberItem.name);
+        }
+    }
+
+    public void remove(GroupMemberItem memberItem) {
+        for (Iterator<Object> iter = displayedItems.iterator(); iter.hasNext(); ) {
+            GroupMemberItem item = (GroupMemberItem) iter.next();
+            if (item.id.equalsIgnoreCase(memberItem.id)) {
+                iter.remove();
+                return;
+            }
         }
     }
 
@@ -76,6 +128,14 @@ public class GroupMembersAdapter extends ArrayAdapter<Object> implements
 
     private class ViewHolder {
         public TextView groupMemberName;
+        public ImageView groupMemberPhoto;
+    }
+
+    @Override
+    public void addAll(Collection<?> collection) {
+        for (Object o : collection) {
+            this.add(o);
+        }
     }
 
     @Override
@@ -102,24 +162,32 @@ public class GroupMembersAdapter extends ArrayAdapter<Object> implements
 
             holder.groupMemberName = (TextView) convertView
                     .findViewById(R.id.groupMemberName);
+            holder.groupMemberPhoto = (ImageView) convertView
+                    .findViewById(R.id.groupMemberPhoto);
 
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        imageLoader.DisplayImage(groupMemberItem.photo, holder.groupMemberPhoto);
         holder.groupMemberName.setText(groupMemberItem.name);
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (onClickListener != null) {
+                    onClickListener.onClick(groupMemberItem);
+                }
             }
         });
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-
+                if (onLongClickListener != null) {
+                    onLongClickListener.longClick(groupMemberItem);
+                    return true;
+                }
                 return false;
             }
         });
@@ -161,6 +229,15 @@ public class GroupMembersAdapter extends ArrayAdapter<Object> implements
             }
         };
         return filter;
+    }
+
+
+    public static interface OnClickListener {
+        public void onClick(Object o);
+    }
+
+    public static interface OnLongClickListener {
+        public void longClick(Object o);
     }
 
 }

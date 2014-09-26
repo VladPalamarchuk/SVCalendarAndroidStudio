@@ -1,9 +1,6 @@
 package bcalendargroups.fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,27 +9,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import bcalendargroups.AddEventComment;
-import bcalendargroups.GroupAssignmentActions;
-import bcalendargroups.QueryMaster;
-import bcalendargroups.SearchPeople;
-import bcalendargroups.SimpleEditText;
-import bcalendargroups.adapters.EventCommentsAdapter;
-import bcalendargroups.adapters.EventMembersNotesAdapter;
-import bcalendargroups.adapters.ExpandableListAdapter;
-import bcalendargroups.adapters.ExpandableListAdapter.ChildHeaderClickListener;
-import bcalendargroups.adapters.ExpandableListAdapter.ChildItemClickListener;
-import bcalendargroups.adapters.ExpandableListAdapter.SingleUserNote;
-import bcalendargroups.adapters.ExpandableListAdapter.SingleUserWithNotes;
-import bcalendargroups.pager.GroupEvents;
-import bcalendargroups.pager.SingleEvent;
+import com.example.calendar.MainActivity;
+import com.example.calendar.R;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -43,18 +24,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.calendar.Catigories;
-import com.example.calendar.MainActivity;
-import com.example.calendar.OneEvent;
-import com.example.calendar.R;
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
+import bcalendargroups.AddEventComment;
+import bcalendargroups.FragmentHelper;
+import bcalendargroups.GroupAssignmentActions;
+import bcalendargroups.QueryMaster;
+import bcalendargroups.SimpleEditText;
+import bcalendargroups.adapters.EventCommentsAdapter;
+import bcalendargroups.adapters.ExpandableListAdapterNew;
+import bcalendargroups.adapters.GroupMembersAdapter;
+import bcalendargroups.pager.GroupEvents;
+import bcalendargroups.pager.SingleEvent;
 import dialogs.CreateEvent;
 import dialogs.MyGroupTasks;
 import dialogs.MyGroupTasks.OnScreenUpdateListener;
-
-import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import dialogs.NoteConfigurationDialog;
 
 @EFragment(R.layout.single_event_fragment)
 @OptionsMenu(R.menu.event_fragment)
@@ -79,7 +67,7 @@ public class EventFragment extends Fragment implements
 
     private EventCommentsAdapter commentsAdapter;
 
-    private ExpandableListAdapter expandableListAdapter;
+    private ExpandableListAdapterNew expandableListAdapter;
 
     private Activity activity;
 
@@ -97,25 +85,25 @@ public class EventFragment extends Fragment implements
         return fragment;
     }
 
-    @OptionsItem(R.id.add_members_to_group)
-    protected void addUserToGroup() {
-        String groupId = ((GroupEvents) getParentActivity()).getGroupId();
-        new SearchPeople(getParentActivity(), groupId).searchPeopleDialog();
-    }
+//    @OptionsItem(R.id.add_members_to_group)
+//    protected void addUserToGroup() {
+//        String groupId = ((GroupEvents) getParentActivity()).getGroupId();
+//        new SearchPeople(getParentActivity(), groupId).searchPeopleDialog();
+//    }
 
-    @OptionsItem(R.id.add_members_to_event)
-    protected void addUserToEvent() {
-        new EventMembersNotesAdapter(getParentActivity(),
-                ((GroupEvents) getParentActivity()).getGroupId(), eventId)
-                .getDialog();
-    }
+//    @OptionsItem(R.id.add_members_to_event)
+//    protected void addUserToEvent() {
+//        new EventMembersNotesAdapter(getParentActivity(),
+//                ((GroupEvents) getParentActivity()).getGroupId(), eventId)
+//                .getDialog();
+//    }
 
-    @OptionsItem(R.id.show_list_members_group)
-    protected void showListMembersGroup() {
-        new ShowGroupMembersList(getParentActivity(),
-                ((GroupEvents) getParentActivity()).getGroupId()).show();
-
-    }
+//    @OptionsItem(R.id.show_list_members_group)
+//    protected void showListMembersGroup() {
+//        new ShowGroupMembersList(getParentActivity(),
+//                ((GroupEvents) getParentActivity()).getGroupId()).show();
+//
+//    }
 
     @OptionsItem(R.id.create_event)
     protected void createEvent() {
@@ -136,6 +124,14 @@ public class EventFragment extends Fragment implements
         myGroupTasks.show();
     }
 
+    @OptionsItem(R.id.action_group_setting)
+    protected void groupSetting() {
+        ArrayList<GroupMembersAdapter.GroupMemberItem> groupMemberItems = ((GroupEvents) getActivity()).getGroupMembers();
+        String groupID = ((GroupEvents) getActivity()).getGroupId();
+        String groupTitle = ((GroupEvents) getActivity()).getGroupTitle();
+        GroupEvents.startGroupSettingActivity(getActivity(), groupID, groupTitle, groupMemberItems);
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -147,9 +143,10 @@ public class EventFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (expandableListAdapter == null) {
-            expandableListAdapter = new ExpandableListAdapter(
-                    getParentActivity(),
+            expandableListAdapter = new ExpandableListAdapterNew(getParentActivity(),
                     ((GroupEvents) getActivity()).getCalendarUserID());
+
+            setUserPermission();
         }
 
         if (commentsAdapter == null) {
@@ -169,14 +166,13 @@ public class EventFragment extends Fragment implements
             menu.findItem(R.id.show_list_my_tasks).setVisible(false);
         } else {
             menu.findItem(R.id.create_event).setVisible(false);
-            menu.findItem(R.id.add_members_to_group).setVisible(false);
-            menu.findItem(R.id.add_members_to_event).setVisible(false);
+//            menu.findItem(R.id.add_members_to_group).setVisible(false);
+//            menu.findItem(R.id.add_members_to_event).setVisible(false);
         }
     }
 
     @Override
     public void onResume() {
-        // TODO Auto-generated method stub
         super.onResume();
 
         Bundle args = getArguments();
@@ -248,49 +244,14 @@ public class EventFragment extends Fragment implements
             // pizda polnaia
 
             // only admin can add user tasks
-            if (((GroupEvents) getParentActivity()).isAdmin()) {
 
-                expandableListAdapter.setShowAddTaskButton(true);
-                expandableListAdapter
-                        .setChildHeaderClickListener(new ChildHeaderClickListener() {
-
-                            @Override
-                            public void click(SingleUserWithNotes userWithNotes) {
-                                // click ADD TASK in childView
-                                new SimpleEditText(
-                                        (GroupEvents) getParentActivity(),
-                                        eventId + "", userWithNotes.id).show();
-                            }
-                        });
-            } else {
-                final String groupID = ((GroupEvents) getParentActivity())
-                        .getGroupId();
-                myGroupTasks = new MyGroupTasks(
-                        activity,
-                        String.valueOf(MainActivity.getInstance().USER.getId()),
-                        groupID);
-                myGroupTasks.setOnScreenUpdateListener(this);
-                myGroupTasks.load();
-
-                // user can confirm task directly here
-                expandableListAdapter
-                        .setChildItemClickListener(new ChildItemClickListener() {
-
-                            @Override
-                            public void click(Object object) {
-                                // if this task is mine and did not confirmed
-                                // yet
-                                SingleUserNote userNote = (SingleUserNote) object;
-                                if (myGroupTasks.getAdapter().containsMyTask(
-                                        userNote.id_note)) {
-                                    myGroupTasks.new ConfirmThisTask(userNote,
-                                            eventId).showDialog();
-                                }
-                            }
-                        });
-            }
 
             expandableListAdapter.add(users);
+
+            final ArrayList<GroupMembersAdapter.GroupMemberItem> groupMemberItems =
+                    ((GroupEvents) getActivity()).getGroupMembers();
+
+            expandableListAdapter.addGroupMembers(groupMemberItems);
 
         } else {
             QueryMaster.alert(getParentActivity(),
@@ -303,6 +264,184 @@ public class EventFragment extends Fragment implements
         String userId = String.valueOf(MainActivity.getInstance().USER.getId());
         new AddEventComment(getParentActivity(), userId, eventId).showDialog();
 
+    }
+
+    private void setUserPermission() {
+        if (((GroupEvents) getParentActivity()).isAdmin()) {
+
+            expandableListAdapter.setShowAddTaskButton(true);
+            expandableListAdapter
+                    .setChildHeaderClickListener(new ExpandableListAdapterNew.ChildHeaderClickListener() {
+
+                        @Override
+                        public void click(ExpandableListAdapterNew.SingleUserWithNotes userWithNotes) {
+                            // click ADD TASK in childView
+                            new SimpleEditText(
+                                    (GroupEvents) getParentActivity(),
+                                    eventId + "", userWithNotes.id).show();
+                        }
+                    });
+
+            expandableListAdapter.setOnGroupLongClickListener(new ExpandableListAdapterNew.OnGroupLongClickListener() {
+                @Override
+                public void longClick(Object o) {
+                    final ExpandableListAdapterNew.SingleUserWithNotes userWithNotes = (ExpandableListAdapterNew.SingleUserWithNotes) o;
+                    final String userID = userWithNotes.id;
+
+                    final String message = "Remove user from event?";
+
+                    QueryMaster.question(getParentActivity(), message,
+                            "Yes", new RemoveUserFromEvent(eventId, userID), "Cancel", null);
+                }
+            });
+
+            expandableListAdapter.setOnGroupClickListener(new ExpandableListAdapterNew.OnGroupClickListener() {
+                @Override
+                public void click(int groupPosition) {
+                    if (userTasksExpandableListView.isGroupExpanded(groupPosition)) {
+                        userTasksExpandableListView.collapseGroup(groupPosition);
+                    } else {
+                        userTasksExpandableListView.expandGroup(groupPosition);
+                    }
+                }
+            });
+
+            expandableListAdapter.setOnChildLongClickListener(new ExpandableListAdapterNew.OnChildLongClickListener() {
+                @Override
+                public void longClick(Object o, String userID) {
+                    final String groupID = ((GroupEvents) getParentActivity()).getGroupId();
+
+                    final NoteConfigurationDialog configurationDialog = new NoteConfigurationDialog(getParentActivity(),
+                            (ExpandableListAdapterNew.SingleUserNote) o, userID, groupID);
+
+                    configurationDialog.setScreenUpdateListener(screenUpdateListener);
+                    configurationDialog.show();
+                }
+            });
+
+            expandableListAdapter.setOnGroupMemberLongClickListener(new ExpandableListAdapterNew.OnGroupMemberLongClickListener() {
+                @Override
+                public void longClick(GroupMembersAdapter.GroupMemberItem groupMemberItem) {
+
+                    final String groupID = ((GroupEvents) getParentActivity()).getGroupId();
+                    final String eventID = eventId;
+                    final String userID = groupMemberItem.id;
+
+                    final String message = "Are you want add user to event?";
+
+                    QueryMaster.question(getParentActivity(), message, "Yes",
+                            new AddUserToEvent(eventID, userID, groupID), "No", null);
+                }
+            });
+
+        } else {
+            // not admin
+            final String groupID = ((GroupEvents) getParentActivity())
+                    .getGroupId();
+
+            myGroupTasks = new MyGroupTasks(
+                    activity,
+                    String.valueOf(MainActivity.getInstance().USER.getId()),
+                    groupID);
+            myGroupTasks.setOnScreenUpdateListener(this);
+            myGroupTasks.load();
+
+            // user can confirm task directly here
+            expandableListAdapter
+                    .setChildItemClickListener(new ExpandableListAdapterNew.ChildItemClickListener() {
+
+                        @Override
+                        public void click(Object object) {
+                            // if this task is owned by user
+                            // user can confirm it here
+                            ExpandableListAdapterNew.SingleUserNote userNote = (ExpandableListAdapterNew.SingleUserNote) object;
+                            if (myGroupTasks.getAdapter().containsMyTask(userNote.id_note)) {
+
+                                myGroupTasks.new ConfirmThisTask(userNote,
+                                        eventId).showDialog();
+                            }
+                        }
+                    });
+        }
+
+    }
+
+    private NoteConfigurationDialog.ScreenUpdateListener screenUpdateListener = new NoteConfigurationDialog.ScreenUpdateListener() {
+        @Override
+        public void update() {
+            FragmentHelper.updateFragment(getFragmentManager());
+        }
+    };
+
+
+    private class AddUserToEvent implements View.OnClickListener {
+
+        private final String eventID;
+        private final String userID;
+        private final String groupID;
+
+        private AddUserToEvent(String eventID, String userID, String groupID) {
+            this.eventID = eventID;
+            this.userID = userID;
+            this.groupID = groupID;
+        }
+
+        @Override
+        public void onClick(View view) {
+            try {
+                GroupAssignmentActions.addPeopleToEventInGroup(getParentActivity(), this.userID, this.groupID, this.eventID, onCompleteListener);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        }
+
+        private QueryMaster.OnCompleteListener onCompleteListener = new QueryMaster.OnCompleteListener() {
+            @Override
+            public void complete(String serverResponse) {
+                final String message = "Participation request was send to user";
+                QueryMaster.alert(getParentActivity(), message);
+//                FragmentHelper.updateFragment(getFragmentManager());
+            }
+
+            @Override
+            public void error(int errorCode) {
+                QueryMaster.alert(getParentActivity(), QueryMaster.ERROR_MESSAGE);
+            }
+        };
+    }
+
+    private class RemoveUserFromEvent implements View.OnClickListener {
+
+        private final String eventID;
+        private final String userID;
+
+        private RemoveUserFromEvent(String eventID, String userID) {
+            this.eventID = eventID;
+            this.userID = userID;
+        }
+
+        @Override
+        public void onClick(View view) {
+            try {
+                GroupAssignmentActions.removeUserFromEvent(getParentActivity(), eventID, userID, onCompleteListener);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        }
+
+        private QueryMaster.OnCompleteListener onCompleteListener = new QueryMaster.OnCompleteListener() {
+            @Override
+            public void complete(String serverResponse) {
+                FragmentHelper.updateFragment(getFragmentManager());
+            }
+
+            @Override
+            public void error(int errorCode) {
+                QueryMaster.alert(getParentActivity(), QueryMaster.ERROR_MESSAGE);
+            }
+        };
     }
 
     private final QueryMaster.OnCompleteListener commentComplete = new QueryMaster.OnCompleteListener() {
@@ -332,8 +471,8 @@ public class EventFragment extends Fragment implements
 
     private Drawable prepareTranslucentBackground() {
         Drawable commentBG = getResources().getDrawable(
-                R.drawable.alpha_background);
-        commentBG.setAlpha(240);
+                R.drawable.comment_background);
+//        commentBG.setAlpha(240);
         return commentBG;
     }
 
@@ -373,7 +512,6 @@ public class EventFragment extends Fragment implements
 //					"", 0, "");
 //
 //		} catch (Exception e2) {
-//			// TODO: handle exception
 //			// QueryMaster.alert(context, e2.toString());
 //
 //		}

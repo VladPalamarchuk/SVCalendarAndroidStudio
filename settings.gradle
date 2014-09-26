@@ -1,1 +1,1 @@
-include ':app', ':aFileChooser', ':vksdk_library'
+include ':app', ':aFileChooser'

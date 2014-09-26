@@ -3,10 +3,13 @@ package bcalendargroups;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
@@ -118,6 +121,9 @@ public class QueryMaster extends Thread {
 
             serverResponse = EntityUtils.toString(response.getEntity());
 
+            Log.i("QueryMaster", "Url -> " + url);
+            Log.i("QueryMaster", "serverResponse -> " + serverResponse);
+
             handler.sendEmptyMessage(QUERY_MASTER_COMPLETE);
 
         } catch (ClientProtocolException e) {
@@ -134,6 +140,66 @@ public class QueryMaster extends Thread {
 
     public void setOnCompleteListener(OnCompleteListener onCompleteListener) {
         this.onCompleteListener = onCompleteListener;
+    }
+
+    /**
+     * Show question dialog with message, expected buttons and call associated listeners
+     *
+     * @param context       not null!
+     * @param message       message body ( not null! )
+     * @param positiveText  text positive button
+     * @param positiveClick positive click listener
+     * @param negativeText  text negative button
+     * @param negativeClick negative click listener
+     */
+    public static void question(Context context, String message,
+                                String positiveText, final View.OnClickListener positiveClick,
+                                String negativeText, final View.OnClickListener negativeClick) {
+
+        if (message == null || context == null) {
+            throw new RuntimeException("QueryMaster.question context and message must be not null");
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        /**
+         * positive handler beside
+         */
+        if (positiveText != null) {
+            builder.setPositiveButton(positiveText, null);
+        }
+        if (negativeText != null) {
+            builder.setNegativeButton(negativeText, null);
+        }
+
+        builder.setMessage(message);
+
+
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        if (positiveText != null) {
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (positiveClick != null) {
+                        positiveClick.onClick(v);
+                    }
+                    alertDialog.dismiss();
+                }
+            });
+        }
+        if (negativeText != null) {
+            alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (negativeClick != null) {
+                        negativeClick.onClick(v);
+                    }
+                    alertDialog.dismiss();
+                }
+            });
+        }
     }
 
     public interface OnCompleteListener {

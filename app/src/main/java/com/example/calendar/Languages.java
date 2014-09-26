@@ -607,7 +607,7 @@ public class Languages {
                 CHOOSE_TIME_FORMATE = "Веберите формат времени";
                 CHOOSE_SET = "Авторизируйтесь в социальных сетях";
                 ENTER_COMMENT = "Введите комментарий";
-                EMTY_GROUP_EVENT_QUESTION = "В группе нет собитий. Создать новое событие?";
+                EMTY_GROUP_EVENT_QUESTION = "В группе нет собитий. Создать новое событие? Или перейти в настройки?";
                 EVENT_DESCRIPTION = "Описание события";
                 SYNC_GOOGLE_CALENDAR_QUESTION = "Синхронизировать с Google календарь?";
                 ADD_COMMENT = "Добавить комментарий";

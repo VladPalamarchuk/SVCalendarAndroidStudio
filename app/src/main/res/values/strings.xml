@@ -50,5 +50,7 @@
     <string name="comment_was_not_sended">Комментарий не был отправлен</string>
     <string name="comment_was_send">Комментарий был отправлен</string>
     <string name="title_activity_splesh">SpleshActivity</string>
+    <string name="group_setting">Настройки группы</string>
+    <string name="event_setting">Настройки события</string>
 
 </resources>

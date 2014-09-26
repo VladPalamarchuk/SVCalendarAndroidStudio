@@ -2,6 +2,7 @@ package bcalendargroups.adapters;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,6 @@ import org.json.JSONObject;
 import com.example.calendar.R;
 
 import java.util.ArrayList;
-
-
 
 
 public class EventCommentsAdapter extends ArrayAdapter<Object> implements Filterable {
@@ -64,9 +63,9 @@ public class EventCommentsAdapter extends ArrayAdapter<Object> implements Filter
     public void add(JSONArray jsonArray) throws JSONException {
         if (jsonArray == null || jsonArray.length() == 0)
             return;
- 
+
         final int length = jsonArray.length();
-        for (int i = length-1; i >=0; i--) {
+        for (int i = length - 1; i >= 0; i--) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
 
             this.add(new EventCommentsAdapterItem(jsonObject));
@@ -100,6 +99,7 @@ public class EventCommentsAdapter extends ArrayAdapter<Object> implements Filter
         if (position == 0) {
             Button button = new Button(context);
             button.setText("Add comment");
+            button.setTextColor(Color.WHITE);
             button.setOnClickListener(new AddCommentClick());
 
             return button;

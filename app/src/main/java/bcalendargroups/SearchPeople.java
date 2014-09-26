@@ -17,152 +17,154 @@ import android.view.LayoutInflater;
 import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ListView;
+
 import bcalendargroups.adapters.SearchPeopleAdapter;
 
 import com.example.calendar.MainActivity;
 import com.example.calendar.R;
 
 public class SearchPeople {
-	Context context;
-	SearchPeopleAdapter searchPeopleAdapter;
-	String groupID;
+    Context context;
+    SearchPeopleAdapter searchPeopleAdapter;
+    String groupID;
 
-	public SearchPeople(Context context, String groupID) {
-		this.context = context;
-		searchPeopleAdapter = new SearchPeopleAdapter(context,
-				R.layout.search_people_item);
+    public SearchPeople(Context context, String groupID) {
+        this.context = context;
+        searchPeopleAdapter = new SearchPeopleAdapter(context,
+                R.layout.search_people_item);
 
-		this.groupID = groupID;
-	}
+        this.groupID = groupID;
+    }
 
-	public void searchPeopleDialog() {
+    public void searchPeopleDialog() {
 
-		LayoutInflater layoutInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		@SuppressLint("InflateParams")
-		final EditText dialogView = (EditText) layoutInflater.inflate(
-				R.layout.simple_edit_text, null);
+        LayoutInflater layoutInflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @SuppressLint("InflateParams")
+        final EditText dialogView = (EditText) layoutInflater.inflate(
+                R.layout.simple_edit_text, null);
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-		builder.setTitle(MainActivity.getInstance().language.SEARCH_MEMBERS);
-		dialogView.setHint(MainActivity.getInstance().language.SEARCH_PARAMS);
+        builder.setTitle(MainActivity.getInstance().language.SEARCH_MEMBERS);
+        dialogView.setHint(MainActivity.getInstance().language.SEARCH_PARAMS);
 
-		builder.setView(dialogView);
-		builder.setPositiveButton(MainActivity.getInstance().language.SEARCH,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						searchPeople(dialogView.getText().toString());
-					}
-				});
-		builder.setNegativeButton(MainActivity.getInstance().language.CANCEL,
-				null);
-		builder.show();
-	}
+        builder.setView(dialogView);
+        builder.setPositiveButton(MainActivity.getInstance().language.SEARCH,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        searchPeople(dialogView.getText().toString());
+                    }
+                });
+        builder.setNegativeButton(MainActivity.getInstance().language.CANCEL,
+                null);
+        builder.show();
+    }
 
-	private void searchPeople(String params) {
-		Map<String, Object> jsonMap = new HashMap<String, Object>();
-		Map<String, Object> data = new HashMap<String, Object>();
+    private void searchPeople(String params) {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        Map<String, Object> data = new HashMap<String, Object>();
 
-		data.put("search", params);
+        data.put("search", params);
 
-		jsonMap.put("data", new JSONObject(data));
-		jsonMap.put("action", "users.search");
+        jsonMap.put("data", new JSONObject(data));
+        jsonMap.put("action", "users.search");
 
-		JSONObject jsonObject = new JSONObject(jsonMap);
+        JSONObject jsonObject = new JSONObject(jsonMap);
 
-		try {
-			GroupAssignmentActions.searchUsers(context, jsonObject,
-					onSearchCompleteListener);
+        try {
+            GroupAssignmentActions.searchUsers(context, jsonObject,
+                    onSearchCompleteListener);
 
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-	}
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
 
-	private QueryMaster.OnCompleteListener onSearchCompleteListener = new QueryMaster.OnCompleteListener() {
-		@Override
-		public void complete(String serverResponse) {
-			QueryMaster.alert(context, serverResponse);
-			try {
-				JSONObject jsonObject = new JSONObject(serverResponse);
-				if (QueryMaster.isSuccess(jsonObject)) {
-					JSONArray jsonArray = jsonObject.getJSONArray("data");
-					searchPeopleResultDialog(jsonArray,
-							onSearchAddedCompleteListener);
+    private QueryMaster.OnCompleteListener onSearchCompleteListener = new QueryMaster.OnCompleteListener() {
+        @Override
+        public void complete(String serverResponse) {
 
-				} else {
-					QueryMaster.toast(context,
-							MainActivity.getInstance().language.SEARCH_NULL);
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-				// server return JSONObject instead JSONArray
-				throw new RuntimeException(e);
-			}
-		}
+            try {
+                JSONObject jsonObject = new JSONObject(serverResponse);
+                if (QueryMaster.isSuccess(jsonObject)) {
+                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+                    searchPeopleResultDialog(jsonArray,
+                            onSearchAddedCompleteListener);
 
-		@Override
-		public void error(int errorCode) {
-			QueryMaster.alert(context, "ERROR");
-		}
-	};
+                } else {
+                    QueryMaster.toast(context,
+                            MainActivity.getInstance().language.SEARCH_NULL);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                // server return JSONObject instead JSONArray
+                throw new RuntimeException(e);
+            }
+        }
 
-	private QueryMaster.OnCompleteListener onSearchAddedCompleteListener = new QueryMaster.OnCompleteListener() {
-		@Override
-		public void complete(String serverResponse) {
-			// loadGroupMembers();
-			// QueryMaster.alert(context, serverResponse);
-		}
+        @Override
+        public void error(int errorCode) {
+            QueryMaster.alert(context, "ERROR");
+        }
+    };
 
-		@Override
-		public void error(int errorCode) {
-			QueryMaster.alert(context, "ERROR");
-		}
-	};
+    private QueryMaster.OnCompleteListener onSearchAddedCompleteListener = new QueryMaster.OnCompleteListener() {
+        @Override
+        public void complete(String serverResponse) {
+            if (onCompleteListener != null) {
+                onCompleteListener.complete();
+            }
+        }
 
-	private void searchPeopleResultDialog(JSONArray jsonArray,
-			final QueryMaster.OnCompleteListener listener) throws JSONException {
-		LayoutInflater layoutInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		@SuppressLint("InflateParams")
-		ListView dialogView = (ListView) layoutInflater.inflate(
-				R.layout.simple_listview, null);
-		dialogView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
-		searchPeopleAdapter.clear();
-		dialogView.setAdapter(searchPeopleAdapter);
+        @Override
+        public void error(int errorCode) {
+            QueryMaster.alert(context, QueryMaster.SERVER_RETURN_INVALID_DATA);
+        }
+    };
 
-		searchPeopleAdapter.add(jsonArray);
+    private void searchPeopleResultDialog(JSONArray jsonArray,
+                                          final QueryMaster.OnCompleteListener listener) throws JSONException {
+        LayoutInflater layoutInflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @SuppressLint("InflateParams")
+        ListView dialogView = (ListView) layoutInflater.inflate(
+                R.layout.simple_listview, null);
+        dialogView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
+        searchPeopleAdapter.clear();
+        dialogView.setAdapter(searchPeopleAdapter);
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setView(dialogView);
-		builder.setPositiveButton(
-				MainActivity.getInstance().language.ADD_TO_GROUPS,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
+        searchPeopleAdapter.add(jsonArray);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(dialogView);
+        builder.setPositiveButton(
+                MainActivity.getInstance().language.ADD_TO_GROUPS,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 //						String checkedIds = searchPeopleAdapter
 //								.getCheckedIdsAsString();
-						ArrayList<Integer> checkedId = searchPeopleAdapter.getCheckedIds();
-						try {
-							addUsersToGroup(groupID, checkedId, listener);
-						} catch (UnsupportedEncodingException e) {
-							e.printStackTrace();
-							throw new RuntimeException(e);
-						}
-					}
-				});
-		builder.setNegativeButton(MainActivity.getInstance().language.CANCEL,
-				null);
-		builder.show();
-	}
+                        ArrayList<Integer> checkedId = searchPeopleAdapter.getCheckedIds();
+                        try {
+                            addUsersToGroup(groupID, checkedId, listener);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+        builder.setNegativeButton(MainActivity.getInstance().language.CANCEL,
+                null);
+        builder.show();
+    }
 
-	private void addUsersToGroup(String groupId, ArrayList<Integer> checkedId,
-			QueryMaster.OnCompleteListener listener)
+    private void addUsersToGroup(String groupId, ArrayList<Integer> checkedId,
+                                 QueryMaster.OnCompleteListener listener)
 
-	throws UnsupportedEncodingException {
+            throws UnsupportedEncodingException {
 //		Map<String, Object> jsonMap = new HashMap<String, Object>();
 //		Map<String, String> data = new HashMap<String, String>();
 //		data.put("id_group", groupId);
@@ -173,6 +175,16 @@ public class SearchPeople {
 //
 //		JSONObject jsonObject = new JSONObject(jsonMap);
 
-		GroupAssignmentActions.addUserToGroup(context, groupId, checkedId, listener);
-	}
+        GroupAssignmentActions.addUserToGroup(context, groupId, checkedId, listener);
+    }
+
+    private OnCompleteListener onCompleteListener;
+
+    public void setOnCompleteListener(OnCompleteListener onCompleteListener) {
+        this.onCompleteListener = onCompleteListener;
+    }
+
+    public interface OnCompleteListener {
+        public void complete();
+    }
 }

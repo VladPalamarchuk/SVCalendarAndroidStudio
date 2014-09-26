@@ -69,7 +69,9 @@ dependencies {
     compile 'javax.activation:activation:1.1'
     compile 'net.sf.opencsv:opencsv:2.3'
     compile project(":aFileChooser")
-    compile project(":vksdk_library");
+
+
+//    compile project(":vksdk_library");
     /**
      * annotations
      */
