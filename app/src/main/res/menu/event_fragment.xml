@@ -1,6 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="palamarchuk.bcalendargroups.SingleEvent">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <item
         android:id="@+id/create_event"
@@ -27,30 +26,5 @@
         android:title="Показать список моих заданий"
         android:icon="@drawable/ic_launcher"
         android:showAsAction="always" />
-
-
-    <!--<item-->
-    <!--android:icon="@drawable/three_rect"-->
-    <!--android:orderInCategory="100"-->
-    <!--android:showAsAction="always"-->
-    <!--android:title="@string/add_users_to_event">-->
-    <!--<menu>-->
-    <!--&lt;!&ndash;<item&ndash;&gt;-->
-    <!--&lt;!&ndash;android:id="@+id/add_members_to_group"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:title="Добавить участника в группу"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:visible="false" />&ndash;&gt;-->
-    <!--&lt;!&ndash;<item&ndash;&gt;-->
-    <!--&lt;!&ndash;android:id="@+id/add_members_to_event"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:title="Добавить участника в событие"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:visible="false" />&ndash;&gt;-->
-    <!--&lt;!&ndash;<item&ndash;&gt;-->
-    <!--&lt;!&ndash;android:id="@+id/show_list_members_group"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:title="Показать список участников группы"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:visible="false" />&ndash;&gt;-->
-    <!--<item-->
-    <!--android:id="@+id/show_list_my_tasks"-->
-    <!--android:title="Показать список моих заданий" />-->
-    <!--</menu>-->
-    <!--</item>-->
 
 </menu>
